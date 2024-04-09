@@ -30,11 +30,11 @@ func GetBooksByIDHandler(c *gin.Context) {
 func CreateBookHandler(c *gin.Context) {
 	var book models.Book
 	if err := c.ShouldBindJSON(&book); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error", err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	if err := database.CreateBook(&book); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H("error", err.Error()))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusCreated, book)
@@ -43,7 +43,7 @@ func CreateBookHandler(c *gin.Context) {
 func UpdateBookHandler(c *gin.Context) {
 	id := c.Param("id")
 	var updatedBook models.Book
-	if err := c.ShouldBindJSON(&book); err != nil {
+	if err := c.ShouldBindJSON(&updatedBook); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
